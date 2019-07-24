@@ -1,0 +1,64 @@
+namespace ConsoleApp61
+{
+    using System;
+    using System.IO;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Dictionary<string, int> dic = new Dictionary<string, int>();
+
+            using (StreamReader reader = new StreamReader("res.txt"))
+            {
+                using (StreamReader readerTwo = new StreamReader("resTwo.txt"))
+                {
+                    using (StreamWriter writer = new StreamWriter("act.txt"))
+                    {
+                        while (true)
+                        {
+                            string firstWord = reader.ReadLine();
+                            string[] second = readerTwo.ReadToEnd().Split(new char[] { ' ', '-', ',', '!', '?', '.' }, StringSplitOptions.RemoveEmptyEntries);
+
+                            if (firstWord == null)
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                for (int i = 0; i < second.Length; i++)
+                                {
+                                    string toCompare = second[i].ToLower();
+                                    if (firstWord==toCompare)
+                                    {
+                                        if (!dic.ContainsKey(firstWord))
+                                        {
+                                            dic.Add(firstWord, 1);
+                                        }
+
+                                        else
+                                        {
+                                            dic[firstWord]++;
+                                        }
+                                    }
+                                    
+                                }
+                            }
+                        }
+
+                        foreach (var item in dic.OrderByDescending(x=>x.Value))
+                        {
+                            writer.Write(item);
+                        }
+
+
+
+                    }
+                }
+            }
+        }
+    }
+}
+
